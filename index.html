@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lil Club Samui</title>
+<title>LIL CLUB</title>
 
 <style>
 body{
@@ -14,25 +14,27 @@ body{
   padding:20px;
 }
 
+/* LOGO */
+.logo{
+  width:120px;
+  display:block;
+  margin:10px auto;
+  filter: drop-shadow(0 0 15px red);
+}
+
+/* TITLE */
 h1{
   color:#ff0033;
-  text-shadow:0 0 20px #ff0033;
+  text-shadow:0 0 15px #ff0033;
+  font-size:40px;
 }
 
-/* SWIPE */
-.swipe-container{
-  display:flex;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-}
-
-.swipe-container::-webkit-scrollbar{
-  display:none;
-}
-
-.page{
-  min-width:100%;
-  scroll-snap-align:start;
+/* CATEGORY */
+.category button{
+  margin:5px;
+  background:#111;
+  border:1px solid red;
+  color:white;
 }
 
 /* MENU */
@@ -40,7 +42,7 @@ h1{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:15px;
-  padding:10px;
+  margin-top:20px;
 }
 
 .item{
@@ -48,6 +50,14 @@ h1{
   border:1px solid #ff0033;
   border-radius:15px;
   padding:15px;
+}
+
+.item h3{
+  font-size:20px;
+}
+
+.item p{
+  font-size:18px;
 }
 
 button{
@@ -58,129 +68,154 @@ button{
   border-radius:10px;
   cursor:pointer;
 }
-</style>
 
+input{
+  width:60px;
+  text-align:center;
+}
+
+/* STATUS */
+#status{
+  font-size:22px;
+  margin-top:20px;
+  color:#00ffcc;
+}
+
+/* BAR SCREEN (จำลองหน้าบาร์) */
+#bar{
+  margin-top:20px;
+  padding:15px;
+  border:2px solid red;
+  border-radius:10px;
+}
+</style>
 </head>
 
 <body>
 
+<!-- LOGO -->
+<img src="logo.png" class="logo">
+
 <h1>🍸 LIL CLUB</h1>
 
 <!-- TABLE -->
-<select id="table">
-  <option>VIP1</option>
-  <option>VIP2</option>
-  <option>VIP3</option>
-</select>
+<select id="table" style="display:none;"></select>
 
-<p>👉 ปัดซ้าย/ขวา เพื่อเลือกเมนู</p>
+<!-- CATEGORY -->
+<div class="category">
+  <button onclick="showCategory('all')">All</button>
+  <button onclick="showCategory('vodka')">Vodka</button>
+  <button onclick="showCategory('beer')">Beer</button>
+  <button onclick="showCategory('cocktail')">Cocktail</button>
+</div>
 
-<!-- SWIPE MENU -->
-<div class="swipe-container">
+<!-- MENU -->
+<div class="menu">
 
-  <!-- VODKA -->
-  <div class="page">
-    <h2>🍸 Vodka</h2>
-    <div class="menu">
+<div class="item vodka">
+  <h3>Absolut</h3>
+  <p>220</p>
+  <input type="number" id="qty-absolut" value="1" min="1"><br><br>
+  <button onclick="orderDrink('Absolut',220,'qty-absolut')">ORDER</button>
+</div>
 
-      <div class="item">
-        <h3>Absolut</h3>
-        <p>220 THB</p>
-        <button onclick="orderDrink('Absolut',220)">ORDER</button>
-      </div>
+<div class="item beer">
+  <h3>Heineken</h3>
+  <p>120</p>
+  <input type="number" id="qty-heineken" value="1" min="1"><br><br>
+  <button onclick="orderDrink('Heineken',120,'qty-heineken')">ORDER</button>
+</div>
 
-      <div class="item">
-        <h3>Belvedere</h3>
-        <p>280 THB</p>
-        <button onclick="orderDrink('Belvedere',280)">ORDER</button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- BEER -->
-  <div class="page">
-    <h2>🍺 Beer</h2>
-    <div class="menu">
-
-      <div class="item">
-        <h3>Heineken</h3>
-        <p>120 THB</p>
-        <button onclick="orderDrink('Heineken',120)">ORDER</button>
-      </div>
-
-      <div class="item">
-        <h3>Corona</h3>
-        <p>220 THB</p>
-        <button onclick="orderDrink('Corona',220)">ORDER</button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- 🎂 BIRTHDAY PAGE -->
-  <div class="page">
-    <h2>🎂 Birthday</h2>
-
-    <div class="item">
-
-      <input type="text" id="bdayName" placeholder="ชื่อเจ้าของวันเกิด"><br><br>
-
-      <input type="file" id="bdayImage" accept="image/*"><br><br>
-
-      <p>💰 Fee: 500 THB</p>
-
-      <button onclick="uploadBirthday()">PAY & UPLOAD</button>
-
-    </div>
-
-  </div>
+<div class="item cocktail">
+  <h3>Mojito</h3>
+  <p>220</p>
+  <input type="number" id="qty-mojito" value="1" min="1"><br><br>
+  <button onclick="orderDrink('Mojito',220,'qty-mojito')">ORDER</button>
+</div>
 
 </div>
 
 <!-- STATUS -->
-<p id="status">Waiting...</p>
+<h2 id="status">Ready</h2>
+
+<!-- BAR SCREEN -->
+<div id="bar">
+  <h3>🍺 BAR SCREEN</h3>
+  <p id="barLog">No orders yet</p>
+</div>
+
+<!-- BIRTHDAY -->
+<h2>🎂 Birthday</h2>
+<input type="text" id="bdayName" placeholder="Name"><br><br>
+<input type="file" id="bdayImage"><br><br>
+<button onclick="uploadBirthday()">UPLOAD</button>
+
+<!-- OPENING -->
+<h3 style="color:#ff0033;">🕒 Opening Hours</h3>
+<p>Open daily from 10 PM till late</p>
 
 <script>
 
-// 🍸 ORDER
-function orderDrink(name, price){
+// 📌 TABLE FROM QR
+const params = new URLSearchParams(window.location.search);
+const table = params.get("table") || "T1";
 
-  const table = document.getElementById("table").value;
+document.getElementById("table").innerHTML =
+  `<option>${table}</option>`;
 
-  document.getElementById("status").innerHTML =
-  "🍸 " + name + " | โต๊ะ: " + table;
+// 📌 FILTER
+function showCategory(cat){
+  const items = document.querySelectorAll('.item');
+
+  items.forEach(i=>{
+    if(cat === 'all'){
+      i.style.display = 'block';
+    }else{
+      i.style.display =
+        i.classList.contains(cat) ? 'block' : 'none';
+    }
+  });
 }
 
-// 🎂 BIRTHDAY UPLOAD
+// 📌 ORDER
+function orderDrink(name, price, qtyId){
+
+  const qty = document.getElementById(qtyId).value;
+
+  const text = `🍸 ${name} x${qty} | โต๊ะ: ${table}`;
+
+  // ลูกค้าเห็น
+  document.getElementById("status").innerHTML = text;
+
+  // เด้งไปหน้าบาร์
+  document.getElementById("barLog").innerHTML = text;
+}
+
+// 📌 BIRTHDAY
 function uploadBirthday(){
 
   const name = document.getElementById("bdayName").value;
   const file = document.getElementById("bdayImage").files[0];
 
   if(!name || !file){
-    alert("ใส่ชื่อ + เลือกรูปก่อน");
+    alert("ใส่ชื่อ + รูปก่อน");
     return;
   }
-
-  const confirmPay = confirm("ยืนยันจ่าย 500 บาท?");
-  if(!confirmPay) return;
-
-  document.getElementById("status").innerHTML =
-  "🎂 Birthday: " + name;
 
   const reader = new FileReader();
 
   reader.onload = function(e){
     const img = document.createElement("img");
     img.src = e.target.result;
-    img.style.width = "200px";
-    img.style.marginTop = "20px";
-
+    img.style.width = "120px";
+    img.style.marginTop = "10px";
     document.body.appendChild(img);
   }
 
   reader.readAsDataURL(file);
+
+  document.getElementById("status").innerHTML =
+    `🎂 Happy Birthday ${name}`;
 }
 
 </script>
