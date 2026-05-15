@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lil Club Samui</title>
+
+<style>
+body{
+  background:#000;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding:20px;
+}
+
+h1{
+  color:#ff0033;
+  text-shadow:0 0 20px #ff0033;
+}
+
+/* SWIPE */
+.swipe-container{
+  display:flex;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+}
+
+.swipe-container::-webkit-scrollbar{
+  display:none;
+}
+
+.page{
+  min-width:100%;
+  scroll-snap-align:start;
+}
+
+/* MENU */
+.menu{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  padding:10px;
+}
+
+.item{
+  background:#111;
+  border:1px solid #ff0033;
+  border-radius:15px;
+  padding:15px;
+}
+
+button{
+  background:#ff0033;
+  color:white;
+  border:none;
+  padding:10px;
+  border-radius:10px;
+  cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>🍸 LIL CLUB</h1>
+
+<!-- TABLE -->
+<select id="table">
+  <option>VIP1</option>
+  <option>VIP2</option>
+  <option>VIP3</option>
+</select>
+
+<p>👉 ปัดซ้าย/ขวา เพื่อเลือกเมนู</p>
+
+<!-- SWIPE MENU -->
+<div class="swipe-container">
+
+  <!-- VODKA -->
+  <div class="page">
+    <h2>🍸 Vodka</h2>
+    <div class="menu">
+
+      <div class="item">
+        <h3>Absolut</h3>
+        <p>220 THB</p>
+        <button onclick="orderDrink('Absolut',220)">ORDER</button>
+      </div>
+
+      <div class="item">
+        <h3>Belvedere</h3>
+        <p>280 THB</p>
+        <button onclick="orderDrink('Belvedere',280)">ORDER</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BEER -->
+  <div class="page">
+    <h2>🍺 Beer</h2>
+    <div class="menu">
+
+      <div class="item">
+        <h3>Heineken</h3>
+        <p>120 THB</p>
+        <button onclick="orderDrink('Heineken',120)">ORDER</button>
+      </div>
+
+      <div class="item">
+        <h3>Corona</h3>
+        <p>220 THB</p>
+        <button onclick="orderDrink('Corona',220)">ORDER</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 🎂 BIRTHDAY PAGE -->
+  <div class="page">
+    <h2>🎂 Birthday</h2>
+
+    <div class="item">
+
+      <input type="text" id="bdayName" placeholder="ชื่อเจ้าของวันเกิด"><br><br>
+
+      <input type="file" id="bdayImage" accept="image/*"><br><br>
+
+      <p>💰 Fee: 500 THB</p>
+
+      <button onclick="uploadBirthday()">PAY & UPLOAD</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- STATUS -->
+<p id="status">Waiting...</p>
+
+<script>
+
+// 🍸 ORDER
+function orderDrink(name, price){
+
+  const table = document.getElementById("table").value;
+
+  document.getElementById("status").innerHTML =
+  "🍸 " + name + " | โต๊ะ: " + table;
+}
+
+// 🎂 BIRTHDAY UPLOAD
+function uploadBirthday(){
+
+  const name = document.getElementById("bdayName").value;
+  const file = document.getElementById("bdayImage").files[0];
+
+  if(!name || !file){
+    alert("ใส่ชื่อ + เลือกรูปก่อน");
+    return;
+  }
+
+  const confirmPay = confirm("ยืนยันจ่าย 500 บาท?");
+  if(!confirmPay) return;
+
+  document.getElementById("status").innerHTML =
+  "🎂 Birthday: " + name;
+
+  const reader = new FileReader();
+
+  reader.onload = function(e){
+    const img = document.createElement("img");
+    img.src = e.target.result;
+    img.style.width = "200px";
+    img.style.marginTop = "20px";
+
+    document.body.appendChild(img);
+  }
+
+  reader.readAsDataURL(file);
+}
+
+</script>
+
+</body>
+</html>
